@@ -7,23 +7,21 @@ import (
 )
 
 func init() {
-	http.HandleFunc("/q", getQuestions)
+	http.Handle("/q", ApiHandler(getQuestions))
 }
 
-func getQuestions(w http.ResponseWriter, r *http.Request) {
-	list := db.GetQuestions()
+func getQuestions(w http.ResponseWriter, r *http.Request) *ApiError {
+	list, err := db.GetQuestions()
 	j, err := json.Marshal(&CommonResult{
 		Code: 1,
 		Msg:  "",
 		Data: list,
 	})
-	checkErr(err)
+	if err != nil {
+		return &ApiError{err, 0, ""}
+	}
 
 	w.Write(j)
+	return nil
 }
 
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}

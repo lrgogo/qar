@@ -8,26 +8,24 @@ type Question struct {
 	Update_time string `json:"update_time"`
 }
 
-func GetQuestions() []Question {
+func GetQuestions() ([]Question, error) {
 	rows, err :=
 		db.Query(
 			"SELECT question.id, question.user_id, question.title, question.content, question.update_time FROM question ORDER BY question.create_time DESC LIMIT 20")
 	defer rows.Close()
-	checkErr(err)
+	if err != nil {
+		return nil, err
+	}
 
 	var list []Question
 	for rows.Next() {
 		q := Question{}
 		err = rows.Scan(&q.Id, &q.User_id, &q.Title, &q.Content, &q.Update_time)
-		checkErr(err)
+		if err != nil {
+			return nil, err
+		}
 
 		list = append(list, q)
 	}
-	return list
-}
-
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
+	return list, nil
 }
