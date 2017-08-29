@@ -5,14 +5,14 @@ import (
 	"log"
 	"time"
 	"net/http"
-	"app/api"
+	"app/controller"
 )
 
 func main() {
 	db.Connect()
 	defer db.Close()
 
-	api.Load()
+	controller.Load()
 
 	http.Handle("/", http.FileServer(http.Dir("static/html")))
 
