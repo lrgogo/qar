@@ -8,44 +8,28 @@ import (
 	"time"
 )
 
-type CommonResult struct {
-	Code int `json:"code"`
-	Msg  string `json:"msg"`
-	Data interface{} `json:"data,omitempty"`
+type ApiResult struct {
+	Error error `json:"error,omitempty"`
+	Code  int `json:"code"`
+	Msg   string `json:"msg"`
+	Data  interface{} `json:"data,omitempty"`
 }
 
-type ApiError struct {
-	Error error
-	Code  int
-	Msg   string
-}
-
-type ApiHandler func(response http.ResponseWriter, r *http.Request) *ApiError
+type ApiHandler func(response http.ResponseWriter, r *http.Request) *ApiResult
 
 func (fn ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(time.Now().Format("2000-01-02 15:04:05"), r.Method, r.URL)
 
-	if err := fn(w, r); err != nil {
-		if err.Error != nil {
-			log.Println(err)
-			j, _ := json.Marshal(&CommonResult{
-				Code: 500,
-				Msg:  "server error",
-			})
-
-			w.Write(j)
-		} else {
-			j, _ := json.Marshal(&CommonResult{
-				Code: err.Code,
-				Msg:  err.Msg,
-			})
-
-			w.Write(j)
-		}
+	result := fn(w, r)
+	if result.Error != nil {
+		log.Println(result.Error)
 	}
+	j, _ := json.Marshal(result)
+
+	w.Write(j)
 
 }
 
-func Load()  {
+func Load() {
 
 }
