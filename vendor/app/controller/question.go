@@ -12,8 +12,8 @@ func init() {
 func getQuestions(w http.ResponseWriter, r *http.Request) *ApiResult {
 	list, err := db.GetQuestions()
 	if err != nil {
-		return &ApiResult{err, 0, "", nil}
+		return &ApiResult{Error: err}
 	}
-	return &ApiResult{nil, 1, "", list}
+	return &ApiResult{Code: CODE_SUCCESS, Data: list}
 }
 
