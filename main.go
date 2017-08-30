@@ -3,18 +3,14 @@ package main
 import (
 	"app/db"
 	"log"
-	"time"
 	"net/http"
 	"app/controller"
-	"flag"
 	"os"
 )
 
 func main() {
 	//日志
-	name := flag.String("log", "server.log", "log file name")
-	flag.Parse()
-	file, err := os.OpenFile(*name, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	file, err := os.OpenFile("server.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
 	if err != nil {
 		log.Println(err)
 		return
@@ -29,6 +25,7 @@ func main() {
 		log.Println(err)
 		return
 	}
+	log.Println("mysql connect success")
 
 	//接口路由
 	controller.Load()
@@ -37,7 +34,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("static/html")))
 
 	//服务器
-	log.Println(time.Now().Format("2006-01-02 15:04:05"), "server running", addr())
+	log.Println("server running", addr())
 	err = http.ListenAndServe(addr(), nil)
 	if err != nil {
 		log.Println(err)

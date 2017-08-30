@@ -3,7 +3,6 @@ package db
 import(
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
 )
 
 var db *sql.DB
@@ -19,7 +18,6 @@ func Connect() error {
 	if err != nil {
 		return err
 	}
-	log.Println("mysql connect success")
 	return nil
 }
 
