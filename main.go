@@ -5,18 +5,16 @@ import (
 	"log"
 	"net/http"
 	"app/controller"
-	"os"
+	"app/util"
 )
 
 func main() {
 	//日志
-	file, err := os.OpenFile("server.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
+	err := util.InitLog()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	log.SetOutput(file)
-	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
 	//数据库
 	err = db.Connect()
