@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"log"
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -23,7 +22,7 @@ type ApiResult struct {
 type ApiHandler func(response http.ResponseWriter, r *http.Request) *ApiResult
 
 func (fn ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(time.Now().Format("2006-01-02 15:04:05"), r.Method, r.URL, r.RemoteAddr, r.Body, r.Form, r.RequestURI, r.Header)
+	log.Println(time.Now().Format("2006-01-02 15:04:05"), r.Method, r.URL, r.RemoteAddr, r.Body, r.Form, r.RequestURI, r.Header)
 
 	result := fn(w, r)
 	if result.Error != nil {
@@ -32,7 +31,7 @@ func (fn ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		result.Msg = "服务器错误"
 	}
 	j, _ := json.Marshal(result)
-	fmt.Println(time.Now().Format("2006-01-02 15:04:05"), r.Method, r.URL, r.RemoteAddr, string(j))
+	log.Println(time.Now().Format("2006-01-02 15:04:05"), r.Method, r.URL, r.RemoteAddr, string(j))
 	w.Write(j)
 
 }
