@@ -31,7 +31,7 @@ func GetQuestions() ([]Question, error) {
 }
 
 func GetQuestionsTotal() (int, error) {
-	rows, err := db.Query("SELECT COUNT(*) FROM question")
+	rows, err := db.Query("SELECT COUNT(question.id) FROM question")
 	defer rows.Close()
 	if err != nil {
 		return 0, err
