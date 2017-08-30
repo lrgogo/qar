@@ -29,3 +29,20 @@ func GetQuestions() ([]Question, error) {
 	}
 	return list, nil
 }
+
+func GetQuestionsTotal() (int, error) {
+	rows, err := db.Query("SELECT COUNT(*) FROM question")
+	defer rows.Close()
+	if err != nil {
+		return 0, err
+	}
+
+	var total int
+	for rows.Next()  {
+		err = rows.Scan(&total)
+		if err != nil {
+			return 0, err
+		}
+	}
+	return total, nil
+}
