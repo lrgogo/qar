@@ -3,6 +3,7 @@ package util
 import (
 	"os"
 	"log"
+	"io"
 )
 
 func InitLog() error {
@@ -10,7 +11,8 @@ func InitLog() error {
 	if err != nil {
 		return err
 	}
-	log.SetOutput(file)
+	writers := io.MultiWriter(file, os.Stdout)
+	log.SetOutput(writers)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	return nil
 }
