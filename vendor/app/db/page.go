@@ -3,6 +3,7 @@ package db
 import (
 	"strconv"
 	"database/sql"
+	"errors"
 )
 
 /**
@@ -38,6 +39,9 @@ func GetPagesInfo(sel string, tableName string, conditions string, currentpage i
 			temp = temp + 1
 		}
 		totalpages = temp
+	}
+	if currentpage > totalpages {
+		return totalItem, totalpages, nil, errors.New("超过总页数")
 	}
 	rows, err = db.Query(sel + " " + tableName + " " + conditions + " LIMIT " + strconv.Itoa((currentpage-1)*pagesize) + "," + strconv.Itoa(pagesize))
 	if err != nil {

@@ -21,7 +21,9 @@ func GetReplys(currentpage, pagesize int) ([]Reply, error) {
 			currentpage,
 			pagesize,
 		)
-	defer rows.Close()
+	if rows != nil {
+		defer rows.Close()
+	}
 	if err != nil {
 		return nil, err
 	}
