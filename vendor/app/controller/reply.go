@@ -7,10 +7,10 @@ import (
 )
 
 func init() {
-	http.Handle("/a", ApiHandler(getAnswers))
+	http.Handle("/r", ApiHandler(getReplys))
 }
 
-func getAnswers(w http.ResponseWriter, r *http.Request) *ApiResult{
+func getReplys(w http.ResponseWriter, r *http.Request) *ApiResult{
 	if err := r.ParseForm(); err != nil {
 		return &ApiResult{Error: err}
 	}
@@ -23,9 +23,10 @@ func getAnswers(w http.ResponseWriter, r *http.Request) *ApiResult{
 		return &ApiResult{Code: CODE_PARAMS_ERROR, Msg:"参数错误"}
 	}
 
-	list, err := db.GetAnswers(page, count)
+	list, err := db.GetReplys(page, count)
 	if err != nil {
 		return &ApiResult{Error: err}
 	}
 	return &ApiResult{Code: CODE_SUCCESS, Data: list}
 }
+
