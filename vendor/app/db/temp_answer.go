@@ -12,7 +12,7 @@ func GetTempAnswers(currentpage, pagesize int) ([]TempAnswer, error) {
 		GetPagesInfo(
 			"SELECT id, c FROM",
 			"temp_answer",
-			"ORDER BY id ASC",
+			"ORDER BY id DESC",
 			currentpage,
 			pagesize,
 		)
