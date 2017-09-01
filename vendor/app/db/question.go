@@ -38,7 +38,7 @@ func GetQuestionsTotal() (int, error) {
 	}
 
 	var total int
-	for rows.Next()  {
+	if rows.Next()  {
 		err = rows.Scan(&total)
 		if err != nil {
 			return 0, err

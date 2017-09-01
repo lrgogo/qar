@@ -9,6 +9,7 @@ import (
 const (
 	CODE_SUCCESS      = 1
 	CODE_SERVER_ERROR = 2
+	CODE_PARAMS_ERROR = 3
 )
 
 type ApiResult struct {
