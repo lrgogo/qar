@@ -17,13 +17,23 @@ func main() {
 	}
 
 	//数据库
-	err = db.Connect()
-	defer db.Close()
+	err = db.ConnectDB()
+	defer db.CloseDB()
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	log.Println("mysql connect success")
+
+	//Redis
+	err = db.InitRedis()
+	defer db.CloseRedis()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("redis init success")
+
 
 	//接口路由
 	controller.Load()
