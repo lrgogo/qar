@@ -9,4 +9,4 @@
 - [x] 日志（控制台和文件）
 - [x] MySQL增删改查
 - [x] MySQL分页
-- [ ] Redis使用
+- [x] Redis使用

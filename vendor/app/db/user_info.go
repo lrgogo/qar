@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 	"log"
+	"app/config"
 )
 
 type UserInfo struct {
@@ -19,7 +20,8 @@ type UserInfo struct {
 }
 
 func GetUserInfo(uid string) (*UserInfo, error) {
-	val, err := client.Get(uid).Result()
+	key := config.REDIS_USER_INFO + uid
+	val, err := client.Get(key).Result()
 	if err == nil { //Redis存在这个key
 		info := &UserInfo{}
 		err = json.Unmarshal([]byte(val), info)
@@ -51,7 +53,7 @@ func GetUserInfo(uid string) (*UserInfo, error) {
 	if err != nil {
 		 return nil, err
 	}
-	err = client.Set(uid, string(bts), 1 * time.Minute).Err()
+	err = client.Set(key, string(bts), 1 * time.Minute).Err()
 	if err != nil {
 		return nil, err
 	}
