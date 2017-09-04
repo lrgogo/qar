@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"app/db"
+	"strconv"
 )
 
 func init() {
@@ -13,8 +14,11 @@ func getUserInfo(w http.ResponseWriter, r *http.Request) *ApiResult{
 	if err := r.ParseForm(); err != nil {
 		return &ApiResult{Error: err}
 	}
-	uid := r.Form.Get("uid")
-	info, err := db.GetUserInfo(uid)
+	_, err := strconv.ParseInt(r.Form.Get("uid"), 10, 64)
+	if err != nil {
+		return &ApiResult{Code: CODE_PARAMS_ERROR, Msg:"参数错误"}
+	}
+	info, err := db.GetUserInfo(r.Form.Get("uid"))
 	if err != nil {
 		return &ApiResult{Error: err}
 	}
