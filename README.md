@@ -10,3 +10,4 @@
 - [x] MySQL增删改查
 - [x] MySQL分页
 - [x] Redis使用
+- [x] JWT使用
