@@ -19,7 +19,7 @@ type ApiResult struct {
 	Data  interface{} `json:"data,omitempty"`
 }
 
-type ApiHandler func(response http.ResponseWriter, r *http.Request) *ApiResult
+type ApiHandler func(w http.ResponseWriter, r *http.Request) *ApiResult
 
 func (fn ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, r.URL, r.RemoteAddr, r.Body, r.Form, r.RequestURI, r.Header)
@@ -28,7 +28,7 @@ func (fn ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if result.Error != nil {
 		log.Println(result.Error)
 		result.Code = CODE_SERVER_ERROR
-		result.Msg = "服务器错误"
+		result.Msg = result.Error.Error()
 	}
 	j, _ := json.Marshal(result)
 	log.Println(r.Method, r.URL, r.RemoteAddr, string(j))

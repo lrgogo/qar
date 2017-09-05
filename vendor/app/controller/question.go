@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"app/db"
+	"app/util"
 )
 
 func init() {
@@ -11,7 +12,11 @@ func init() {
 }
 
 func getQuestions(w http.ResponseWriter, r *http.Request) *ApiResult {
-	list, err := db.GetQuestions()
+	uid, err := util.VerifyJWT(r)
+	if err != nil {
+		return &ApiResult{Error:err}
+	}
+	list, err := db.GetQuestions(uid)
 	if err != nil {
 		return &ApiResult{Error: err}
 	}
