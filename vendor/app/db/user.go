@@ -1,7 +1,7 @@
 package db
 
 import (
-	"errors"
+	"app/util"
 )
 
 type LoginInfo struct {
@@ -28,10 +28,10 @@ func GetLoginInfo(mobile, pwd string) (*LoginInfo, error) {
 			return nil, err
 		}
 	} else {
-		return nil, errors.New("该用户未注册")
+		return nil, util.Error(util.USER_UNEXIST, "该用户未注册")
 	}
 	if i.Pwd != pwd {
-		return nil, errors.New("密码错误")
+		return nil, util.Error(util.PWD_WRONG, "密码错误")
 	}
 	return &i, nil
 }

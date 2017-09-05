@@ -4,28 +4,29 @@ import (
 	"net/http"
 	"app/db"
 	"strconv"
+	"app/util"
 )
 
 func init() {
 	http.Handle("/a", ApiHandler(getAnswers))
 }
 
-func getAnswers(w http.ResponseWriter, r *http.Request) *ApiResult{
+func getAnswers(w http.ResponseWriter, r *http.Request) error {
 	if err := r.ParseForm(); err != nil {
-		return &ApiResult{Error: err}
+		return err
 	}
 	page, err := strconv.Atoi(r.Form.Get("page"))
 	if err != nil {
-		return &ApiResult{Code: CODE_PARAMS_ERROR, Msg:"参数错误"}
+		return util.Error(util.PARAMS_ERROR, "参数错误")
 	}
 	count, err := strconv.Atoi(r.Form.Get("count"))
 	if err != nil {
-		return &ApiResult{Code: CODE_PARAMS_ERROR, Msg:"参数错误"}
+		return util.Error(util.PARAMS_ERROR, "参数错误")
 	}
 
 	list, err := db.GetAnswers(page, count)
 	if err != nil {
-		return &ApiResult{Error: err}
+		return err
 	}
-	return &ApiResult{Code: CODE_SUCCESS, Data: list}
+	return util.Success(list)
 }

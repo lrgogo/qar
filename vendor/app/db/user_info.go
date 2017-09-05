@@ -2,10 +2,10 @@ package db
 
 import (
 	"encoding/json"
-	"errors"
 	"time"
 	"log"
 	"app/config"
+	"app/util"
 )
 
 type UserInfo struct {
@@ -46,8 +46,8 @@ func GetUserInfo(uid string) (*UserInfo, error) {
 		if err != nil {
 			return nil, err
 		}
-	}else {
-		return nil, errors.New("没有该uid的用户信息")
+	} else {
+		return nil, util.Error(util.USER_UNEXIST, "用户不存在")
 	}
 	bts, err := json.Marshal(&u)
 	if err != nil {

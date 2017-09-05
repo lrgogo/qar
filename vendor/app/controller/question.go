@@ -11,22 +11,22 @@ func init() {
 	http.Handle("/q/total", ApiHandler(getQuestionsTotal))
 }
 
-func getQuestions(w http.ResponseWriter, r *http.Request) *ApiResult {
+func getQuestions(w http.ResponseWriter, r *http.Request) error {
 	uid, err := util.VerifyJWT(r)
 	if err != nil {
-		return &ApiResult{Error:err}
+		return err
 	}
 	list, err := db.GetQuestions(uid)
 	if err != nil {
-		return &ApiResult{Error: err}
+		return err
 	}
-	return &ApiResult{Code: CODE_SUCCESS, Data: list}
+	return util.Success(list)
 }
 
-func getQuestionsTotal(w http.ResponseWriter, r *http.Request) *ApiResult {
+func getQuestionsTotal(w http.ResponseWriter, r *http.Request) error {
 	total, err := db.GetQuestionsTotal()
 	if err != nil {
-		 return &ApiResult{Error:err}
+		return err
 	}
-	return &ApiResult{Code:CODE_SUCCESS, Data:total}
+	return util.Success(total)
 }
